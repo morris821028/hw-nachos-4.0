@@ -39,7 +39,9 @@ class Scheduler {
 	void Print();			// Print contents of ready list
     
     // SelfTest for scheduler is implemented in class Thread
-    
+    	// morris add
+	SchedulerType getSchedulerType() {return schedulerType;}
+	void setSchedulerType(SchedulerType t) {schedulerType = t;}
   private:
 	SchedulerType schedulerType;
 	List<Thread *> *readyList;	// queue of threads that are ready to run,

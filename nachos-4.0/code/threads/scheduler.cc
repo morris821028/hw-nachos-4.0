@@ -23,6 +23,13 @@
 #include "scheduler.h"
 #include "main.h"
 
+int SJFCompare(Thread *a, Thread *b) {
+	return 0;
+}
+int PriorityCompare(Thread *a, Thread *b) {
+	return 0;
+}
+
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
 // 	Initialize the list of ready but not running threads.
@@ -31,8 +38,17 @@
 
 Scheduler::Scheduler()
 {
-//	schedulerType = type;
-	readyList = new List<Thread *>; 
+	schedulerType = RR;
+	switch(schedulerType) {
+	case RR:
+		readyList = new List<Thread *>;
+		break;
+	case SJF:
+		readyList = new SortedList<Thread *>(SJFCompare);
+		break;
+	case Priority:readyList = new SortedList<Thread *>(PriorityCompare);
+		break;
+	}
 	toBeDestroyed = NULL;
 } 
 

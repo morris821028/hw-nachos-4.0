@@ -95,13 +95,7 @@ void
 Thread::Fork(VoidFunctionPtr func, void *arg)
 {
 // morris add
-	testPriority++;
-	if(testPriority == 1)
-		setPriority(64);
-	else if(testPriority == 2)
-		setPriority(128);
-	else
-		setPriority(64);
+	setPriority(128);
 // end morris add
     Interrupt *interrupt = kernel->interrupt;
     Scheduler *scheduler = kernel->scheduler;

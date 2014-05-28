@@ -53,7 +53,7 @@ Alarm::CallBack()
     MachineStatus status = interrupt->getStatus();
     bool woken = _bedroom.MorningCall();
 
-    kernel->currentThread->setPriority(kernel->currentThread->getPriority() - 1);
+    kernel->currentThread->setPriority(kernel->currentThread->getPriority() + 1);
 
     if (status == IdleMode && !woken && _bedroom.IsEmpty()) {// is it time to quit?
         if (!interrupt->AnyFutureInterrupts()) {

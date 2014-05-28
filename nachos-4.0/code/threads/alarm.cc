@@ -70,7 +70,12 @@ void
 Alarm::WaitUntil(int x) {
     IntStatus oldLevel = kernel->interrupt->SetLevel(IntOff);
     Thread* t = kernel->currentThread;
-//    cout << "Alarm::WaitUntil go sleep" << endl;
+
+    // burst time
+    int worktime = kernel->stats->userTicks - t->getStartTime();
+    t->setBurstTime(t->getBurstTime() + worktime);
+    t->setStartTime(kernel->stats->userTicks);
+    cout << "Alarm::WaitUntil go sleep" << endl;
     _bedroom.PutToBed(t, x);
     kernel->interrupt->SetLevel(oldLevel);
 }

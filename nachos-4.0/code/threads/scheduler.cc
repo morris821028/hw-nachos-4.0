@@ -24,7 +24,9 @@
 #include "main.h"
 
 int SJFCompare(Thread *a, Thread *b) {
-	return 0;
+	if(a->getBurstTime() == b->getBurstTime())
+		return 0;
+	return a->getBurstTime() > b->getBurstTime() ? 1 : -1;
 }
 int PriorityCompare(Thread *a, Thread *b) {
 	if(a->getPriority() == b->getPriority())
@@ -42,7 +44,7 @@ int FIFOCompare(Thread *a, Thread *b) {
 
 Scheduler::Scheduler()
 {
-	schedulerType = Priority;
+	schedulerType = SJF;
 	switch(schedulerType) {
 	case RR:
 		readyList = new List<Thread *>;
@@ -150,7 +152,11 @@ Scheduler::Run (Thread *nextThread, bool finishing)
 
     kernel->currentThread = nextThread;  // switch to the next thread
     nextThread->setStatus(RUNNING);      // nextThread is now running
-    
+
+// morris add
+    kernel->currentThread->setStartTime(kernel->stats->userTicks);
+// end morris add    
+
     DEBUG(dbgThread, "Switching from: " << oldThread->getName() << " to: " << nextThread->getName());
     
     // This is a machine-dependent assembly language routine defined 

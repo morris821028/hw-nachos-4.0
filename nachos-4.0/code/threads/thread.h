@@ -114,6 +114,7 @@ class Thread {
     int getStartTime()		{return startTime;}
     void setPriority(int t)	{execPriority = t;}
     int getPriority()		{return execPriority;}
+    static void SchedulingTest();
   private:
     // some of the private data for this class is listed above
 

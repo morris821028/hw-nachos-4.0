@@ -41,10 +41,12 @@ int FIFOCompare(Thread *a, Thread *b) {
 // 	Initialize the list of ready but not running threads.
 //	Initially, no ready threads.
 //----------------------------------------------------------------------
-
-Scheduler::Scheduler()
+Scheduler::Scheduler() {
+	Scheduler(RR);
+}
+Scheduler::Scheduler(SchedulerType type)
 {
-	schedulerType = SJF;
+	schedulerType = type;
 	switch(schedulerType) {
 	case RR:
 		readyList = new List<Thread *>;

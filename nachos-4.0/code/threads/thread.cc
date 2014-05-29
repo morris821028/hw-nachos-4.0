@@ -90,18 +90,18 @@ Thread::~Thread()
 //	"func" is the procedure to run concurrently.
 //	"arg" is a single argument to be passed to the procedure.
 //----------------------------------------------------------------------
-static int testPriority = 0;
+//static int testPriority = 0;
 void 
 Thread::Fork(VoidFunctionPtr func, void *arg)
 {
 // morris add
-	testPriority++;
-	if(testPriority == 1)
-		setPriority(64);
-	else if(testPriority == 2)
-		setPriority(128);
-	else
-		setPriority(64);
+//	testPriority++;
+//	if(testPriority == 1)
+//		setPriority(64);
+//	else if(testPriority == 2)
+//		setPriority(128);
+//	else
+//		setPriority(64);
 // end morris add
     Interrupt *interrupt = kernel->interrupt;
     Scheduler *scheduler = kernel->scheduler;
@@ -446,4 +446,32 @@ Thread::SelfTest()
     t->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
     SimpleThread(0);
 }
-
+// --------------------------------------------------------------------
+// Test schedular
+// --------------------------------------------------------------------
+void
+threadBody() {
+	Thread *thread = kernel->currentThread;
+	while (thread->getBurstTime() > 0) {
+		thread->setBurstTime(thread->getBurstTime() - 1);
+		kernel->interrupt->OneTick();
+		printf("%s: remaining %d\n", kernel->currentThread->getName(), kernel->currentThread->getBurstTime());
+	}
+}
+void
+Thread::SchedulingTest()
+{
+	const int thread_num = 4;
+	char *name[thread_num] = {"A", "B", "C", "D"};
+	int thread_priority[thread_num] = {5, 1, 3, 2};
+	int thread_burst[thread_num] = {3, 9, 7, 3};
+	
+	Thread *t;
+	for (int i = 0; i < thread_num; i ++) {
+		t = new Thread(name[i]);
+		t->setPriority(thread_priority[i]);
+		t->setBurstTime(thread_burst[i]);
+		t->Fork((VoidFunctionPtr) threadBody, (void *)NULL);
+	}
+	kernel->currentThread->Yield();
+}

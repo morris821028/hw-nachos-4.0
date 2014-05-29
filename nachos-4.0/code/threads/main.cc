@@ -74,9 +74,20 @@ main(int argc, char **argv)
     debug = new Debug(debugArg);
     
     DEBUG(dbgThread, "Entering main");
-
+//
+    SchedulerType type = RR;
+    if(strcmp(argv[1], "FCFS") == 0) {
+	type = FIFO;
+    } else if (strcmp(argv[1], "SJF") == 0) {
+	type = SJF;
+    } else if (strcmp(argv[1], "PRIORITY") == 0) {
+	type = Priority;
+    } else if (strcmp(argv[1], "RR") == 0) {
+	type = RR;
+    }
+//
     kernel = new KernelType(argc, argv);
-    kernel->Initialize();
+    kernel->Initialize(type);
     
     CallOnUserAbort(Cleanup);		// if user hits ctl-C
 

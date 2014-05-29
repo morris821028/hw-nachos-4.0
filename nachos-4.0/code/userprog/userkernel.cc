@@ -50,11 +50,15 @@ UserProgKernel::UserProgKernel(int argc, char **argv)
 // UserProgKernel::Initialize
 // 	Initialize Nachos global data structures.
 //----------------------------------------------------------------------
-
 void
 UserProgKernel::Initialize()
 {
-    ThreadedKernel::Initialize();	// init multithreading
+    Initialize(RR);
+}
+void
+UserProgKernel::Initialize(SchedulerType type)
+{
+    ThreadedKernel::Initialize(type);	// init multithreading
 
     machine = new Machine(debugUserProg);
     fileSystem = new FileSystem();
